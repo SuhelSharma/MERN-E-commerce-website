@@ -20,8 +20,6 @@ const port = process.env.PORT || 5000;
 
 import dotenv from 'dotenv';
 dotenv.config({ path: path.resolve('./backend/.env') });
-
-// Connect to MongoDB
 connectDB();
 
 const app = express();

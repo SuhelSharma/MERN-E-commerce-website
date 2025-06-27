@@ -8,7 +8,6 @@ import connectDB from './config/db.js';
 import colors from 'colors';
 import dotenv from 'dotenv';
 dotenv.config();
-
 connectDB();
 
 
