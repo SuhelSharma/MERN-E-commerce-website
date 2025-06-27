@@ -1,15 +1,12 @@
-import cors from 'cors';
-app.use(cors({
-  origin: '*', // Use your Vercel URL in production, like 'https://your-vercel-site.vercel.app'
-  credentials: true,
-}));
-
 import express from 'express';
+import cors from 'cors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-
 import compression from 'compression';
+import dotenv from 'dotenv';
 
+import connectDB from './config/db.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -17,46 +14,43 @@ import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 
-import connectDB from './config/db.js';
-import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
-const port = process.env.PORT || 5000;
-
-
-
-import dotenv from 'dotenv';
+// Load environment variables
 dotenv.config({ path: path.resolve('./backend/.env') });
+
+// Connect to MongoDB
 connectDB();
 
+// Initialize Express app
 const app = express();
 
-const allowedOrigins = ['https://your-vercel-app.vercel.app'];
+// CORS setup (MUST be after app is defined)
+const allowedOrigins = ['https://your-vercel-app.vercel.app', 'http://localhost:3000'];
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-
-
+// Middleware
 app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const __dirname = path.resolve(); // Set {__dirname} to current working directory
+// Serve static files from uploads/
+const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// API Routes
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 app.use('/api/v1/payment', paymentRoutes);
-//-------------------------------------
+
+// Deployment config
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')));
-
-  //any app route that is not api will redirected to index.html
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
   });
@@ -66,10 +60,12 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-//-------------------------------------
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
+// Start server
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`🚀 Server running at http://localhost:${port}/`);
 });
