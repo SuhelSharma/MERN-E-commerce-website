@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -24,14 +25,10 @@ connectDB();
 
 const app = express();
 
-import cors from 'cors';
+app.use(cors({ origin: '*', credentials: true }));
 
 const allowedOrigins = ['https://your-vercel-app.vercel.app'];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
 
 app.use(compression());
 app.use(cookieParser());
