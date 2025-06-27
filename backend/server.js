@@ -24,7 +24,10 @@ connectDB();
 const app = express();
 
 // CORS setup (MUST be after app is defined)
-const allowedOrigins = ['https://your-vercel-app.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://mern-e-commerce-website-422xtggxf-suhelsharmas-projects.vercel.app/', // ✅ Update to your actual deployed Vercel URL
+  'http://localhost:3000' // ✅ Local development (optional)
+];
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
