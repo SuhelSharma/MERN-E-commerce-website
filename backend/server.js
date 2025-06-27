@@ -24,7 +24,15 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+import cors from 'cors';
+
+const allowedOrigins = ['https://your-vercel-app.vercel.app'];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
