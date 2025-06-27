@@ -1,4 +1,9 @@
 import cors from 'cors';
+app.use(cors({
+  origin: '*', // Use your Vercel URL in production, like 'https://your-vercel-site.vercel.app'
+  credentials: true,
+}));
+
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -25,9 +30,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: '*', credentials: true }));
-
 const allowedOrigins = ['https://your-vercel-app.vercel.app'];
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 
 
 app.use(compression());
