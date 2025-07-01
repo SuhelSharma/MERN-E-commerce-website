@@ -22,16 +22,15 @@ connectDB();
 
 // Initialize Express app
 const app = express();
-
-// CORS setup (MUST be after app is defined)
 const allowedOrigins = [
-  'https://mern-e-commerce-website-422xtggxf-suhelsharmas-projects.vercel.app/', // ✅ Update to your actual deployed Vercel URL
-  'http://localhost:3000' // ✅ Local development (optional)
+  'https://mern-e-commerce-website-csupfw50e.vercel.app',
+  'http://localhost:3000'
 ];
+
 app.use(cors({
   origin: allowedOrigins,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
 }));
 
 // Middleware
