@@ -23,7 +23,7 @@ connectDB();
 // Initialize Express app
 const app = express();
 const allowedOrigins = [
-  'https://mern-e-commerce-website-csupfw50e.vercel.app',
+  'https://mern-e-commerce-website-bsua.onrender.com/api/v1',
   'http://localhost:3000'
 ];
 
